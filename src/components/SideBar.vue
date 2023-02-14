@@ -1,6 +1,6 @@
 <template>
     <header>
-        <h1>
+        <h1 class="has-text-centered">
             <img src="../assets/logo.png" alt="" srcset="">
         </h1>
     </header>

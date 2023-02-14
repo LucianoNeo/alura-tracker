@@ -2,25 +2,10 @@
   <div class="box">
     <div class="columns">
       <div class="column is-8" role="form" aria-label="Formulário para criação de uma nova tarefa">
-        <input type="text" class="input" placeholder="Qual tarefa você deseja iniciar?">
+        <input type="text" class="input" placeholder="Qual tarefa você deseja iniciar?" v-model="description">
       </div>
       <div class="column">
-        <div class="is-flex is-align-items-center is-justify-content-space-between">
-          <StopWatch :timeInSeconds="timeInSeconds"/>
-          <button class="button" @click="start">
-            <span class="icon">
-              <i class="fas fa-play"></i>
-            </span>
-            <span>play</span>
-          </button>
-          <button class="button" @click="end">
-            <span class="icon">
-              <i class="fas fa-stop"></i>
-            </span>
-            <span>stop</span>
-          </button>
-
-        </div>
+        <TimerCP @TimerEnded="endTask" />
       </div>
     </div>
   </div>
@@ -28,30 +13,26 @@
 
 <script>
 import { defineComponent } from 'vue'
-import StopWatch from './StopWatch.vue'
+import TimerCP from './Timer.vue'
 
 export default defineComponent({
   name: 'FormCP',
-  components:{
-    StopWatch
-  },
-  data() {
+  emits: ['onSaveTask'],
+  data () {
     return {
-      timeInSeconds: 0,
-      stopwatch: 0
+      description: ''
     }
   },
-  
+  components: {
+    TimerCP
+  },
   methods: {
-
-    start() {
-      this.stopwatch = setInterval(() => {
-        this.timeInSeconds++
-      }, 1000)
-    },
-
-    end() {
-      clearInterval(this.stopwatch)
+    endTask(elapsedTime) {
+    this.$emit('onSaveTask', {
+      description: this.description,
+      elapsedTime: elapsedTime
+    })
+      this.description =''
     }
   }
 })
